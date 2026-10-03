@@ -1,2 +1,26 @@
 # sfetch
-Simple display of system information
+
+A minimal, customizable system info fetcher written in Python — my personal alternative to fastfetch/neofetch.
+
+![screenshot](screenshot.png)
+
+## Features
+
+- Distro detection via `/etc/os-release`
+- Kernel, uptime, shell, CPU model, RAM usage
+- Per-distro ASCII art
+- ANSI-colored output
+- Zero config, single file, pure Python
+
+## Requirements
+
+- Python 3.10+
+- Linux (reads `/proc`, `/etc/os-release`)
+- `psutil`
+
+## Install
+
+### With pipx (recommended)
+
+```bash
+pipx install git+https://github.com/YOUR_NICK/sfetch
