@@ -26,26 +26,72 @@ A minimal, customizable system info fetcher written in Python — my personal al
 
 ## Install
 
-### With pipx (recommended)
+### Quick install (any distro)
+
+If you already have `git` and `pipx` installed:
 
 ```bash
 pipx install git+https://github.com/dkuznetsov700-ui/sfetch
 ```
-### If you dont have pipx yet:
-```bash
-# Arch based
-sudo pacman -S python-pipx
-pipx ensurepath
 
-# Debian / Ubuntu based
-sudo apt install pipx
-pipx ensurepath
+Don't have them yet? See instructions for your distro family below.
+
+### Arch-based (Arch, CachyOS, Manjaro, EndeavourOS)
+
+```bash
+sudo pacman -S git python-pipx
+fish_add_path ~/.local/bin   # fish users
+pipx ensurepath              # bash/zsh users
+pipx install git+https://github.com/dkuznetsov700-ui/sfetch
 ```
-### From source
+
+### Debian-based (Debian, Ubuntu, Linux Mint, Pop!_OS, Kali)
+
+```bash
+sudo apt update
+sudo apt install -y git pipx python3-venv
+pipx ensurepath
+exec $SHELL -l
+pipx install git+https://github.com/dkuznetsov700-ui/sfetch
+```
+
+> **Note:** Ubuntu 20.04 ships Python 3.8 and won't work. Use 22.04+.
+
+### Fedora
+
+```bash
+sudo dnf install -y git pipx
+pipx ensurepath
+exec $SHELL -l
+pipx install git+https://github.com/dkuznetsov700-ui/sfetch
+```
+
+### RHEL-based (RHEL, Rocky Linux, AlmaLinux, CentOS Stream)
+
+```bash
+sudo dnf install -y git epel-release pipx gcc python3-devel
+pipx ensurepath
+exec $SHELL -l
+pipx install git+https://github.com/dkuznetsov700-ui/sfetch
+```
+
+> **Note:** RHEL 9 ships Python 3.9. `platform.freedesktop_os_release()` requires Python 3.10+. Install Python 3.11+ first:
+>
+> ```bash
+> sudo dnf install -y python3.11 python3.11-pip
+> python3.11 -m pip install --user pipx
+> python3.11 -m pipx ensurepath
+> ```
+
+### From source (for development)
+
 ```bash
 git clone https://github.com/dkuznetsov700-ui/sfetch
 cd sfetch
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
+sfetch
 ```
+
+The `-e` flag means **editable install** — code changes are picked up immediately without reinstalling.
