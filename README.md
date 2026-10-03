@@ -5,6 +5,7 @@ A minimal, customizable system info fetcher written in Python — my personal al
 ![screenshot](screenshot.png)
 ![screenshot](screenshot2.png)
 ![screenshot](screenshot3.png)
+![screenshot](screenshot4.png)
 ## Features
 
 - Distro detection via `/etc/os-release`
