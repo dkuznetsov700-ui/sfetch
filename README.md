@@ -27,7 +27,7 @@ pipx install git+https://github.com/dkuznetsov700-ui/sfetch
 ```
 ### From source
 ```bash
-git clone https://github.com/YOUR_NICK/sfetch
+git clone https://github.com/dkuznetsov700-ui/sfetch
 cd sfetch
 python -m venv .venv
 source .venv/bin/activate
