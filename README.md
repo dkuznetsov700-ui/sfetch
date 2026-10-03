@@ -24,7 +24,7 @@ A minimal, customizable system info fetcher written in Python — my personal al
 
 ```bash
 pipx install git+https://github.com/dkuznetsov700-ui/sfetch
-
+```
 ### From source
 ```bash
 git clone https://github.com/YOUR_NICK/sfetch
@@ -32,3 +32,4 @@ cd sfetch
 python -m venv .venv
 source .venv/bin/activate
 pip install -e .
+```
