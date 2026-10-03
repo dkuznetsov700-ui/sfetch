@@ -25,6 +25,16 @@ A minimal, customizable system info fetcher written in Python — my personal al
 ```bash
 pipx install git+https://github.com/dkuznetsov700-ui/sfetch
 ```
+### If you dont have pipx yet:
+```bash
+# Arch based
+sudo pacman -S python-pipx
+pipx ensurepath
+
+# Debian / Ubuntu based
+sudo apt install pipx
+pipx ensurepath
+```
 ### From source
 ```bash
 git clone https://github.com/dkuznetsov700-ui/sfetch
