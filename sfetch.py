@@ -5,11 +5,8 @@ import platform
 import os
 import getpass
 import socket
-
-# --- константы ANSI ---
 RESET = "\033[0m"
 BOLD = "\033[1m"
-
 dcolors = {
     "arch":     "\033[36m",       # cyan
     "ubuntu":   "\033[31m",       # red
@@ -22,12 +19,8 @@ dcolors = {
     "alpine":   "\033[34m",       # blue
     "cachyos":  "\033[36m",       # cyan
 }
-
-
 def line(key, value):
     return f"{key + ':':<9}{value}"
-
-
 def main():
     host = socket.gethostname()
     user = getpass.getuser()
@@ -130,7 +123,6 @@ def main():
 |    |  /   |  \    <|   |  (  <_> )     /   |  \
 |______/|___|  /__|_ \___|  /\____/ \/\_/|___|  /
              \/     \/    \/                  \/ '''
-
     print(f"{color}{art}{RESET}")
     print(f"{BOLD}{user}@{host}{RESET}")
     print(line("OS", os_name))
@@ -139,7 +131,5 @@ def main():
     print(line("Shell", shell))
     print(line("CPU", cpu_model))
     print(line("RAM", f"{ram_used:.1f} / {ram_total:.1f} GB ({ram_percent:.0f}%)"))
-
-
 if __name__ == "__main__":
     main()
