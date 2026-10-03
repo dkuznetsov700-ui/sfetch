@@ -3,7 +3,8 @@
 A minimal, customizable system info fetcher written in Python — my personal alternative to fastfetch/neofetch.
 
 ![screenshot](screenshot.png)
-
+![screenshot](screenshot2.png)
+![screenshot](screenshot3.png)
 ## Features
 
 - Distro detection via `/etc/os-release`
