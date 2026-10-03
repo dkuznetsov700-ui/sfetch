@@ -5,28 +5,11 @@ import platform
 import os
 import getpass
 import socket
-host = socket.gethostname()
-user = getpass.getuser()
-info = platform.freedesktop_os_release()
-os_name = info.get("PRETTY_NAME")
-distro = info.get("ID")
-uptime_sec = int(time.time() - psutil.boot_time())
-days = uptime_sec // 86400          # 86400 = 24*3600
-hours = (uptime_sec % 86400) // 3600
-mins = (uptime_sec % 3600) // 60
-uptime = f"{days}d {hours}h {mins}m"
-with open("/proc/cpuinfo") as f:
-    for line in f:
-        if line.startswith("model name"):
-            cpu_model = line.split(":", 1)[1].strip()
-            break
-mem = psutil.virtual_memory()
-ram_used = mem.used / 1024**3
-ram_total = mem.total / 1024**3
-ram_percent = mem.percent
-shell_path = os.environ.get("SHELL", "")
-shell = shell_path.split("/")[-1]
-art = ''
+
+# --- константы ANSI ---
+RESET = "\033[0m"
+BOLD = "\033[1m"
+
 dcolors = {
     "arch":     "\033[36m",       # cyan
     "ubuntu":   "\033[31m",       # red
@@ -40,94 +23,123 @@ dcolors = {
     "cachyos":  "\033[36m",       # cyan
 }
 
-RESET = "\033[0m"
-BOLD = "\033[1m"
+
 def line(key, value):
     return f"{key + ':':<9}{value}"
-color = dcolors.get(distro, "\033[0m")   # fallback — без цвета
 
-if distro == "arch":
-    art = r'''   _____                .__    .____    .__                     
+
+def main():
+    host = socket.gethostname()
+    user = getpass.getuser()
+    info = platform.freedesktop_os_release()
+    os_name = info.get("PRETTY_NAME")
+    distro = info.get("ID")
+    uptime_sec = int(time.time() - psutil.boot_time())
+    days = uptime_sec // 86400          # 86400 = 24*3600
+    hours = (uptime_sec % 86400) // 3600
+    mins = (uptime_sec % 3600) // 60
+    uptime = f"{days}d {hours}h {mins}m"
+    with open("/proc/cpuinfo") as f:
+        for line_ in f:
+            if line_.startswith("model name"):
+                cpu_model = line_.split(":", 1)[1].strip()
+                break
+    mem = psutil.virtual_memory()
+    ram_used = mem.used / 1024**3
+    ram_total = mem.total / 1024**3
+    ram_percent = mem.percent
+    shell_path = os.environ.get("SHELL", "")
+    shell = shell_path.split("/")[-1]
+    art = ''
+    color = dcolors.get(distro, "\033[0m")   # fallback — без цвета
+
+    if distro == "arch":
+        art = r'''   _____                .__    .____    .__                     
   /  _  \_______   ____ |  |__ |    |   |__| ____  __ _____  ___
  /  /_\  \_  __ \_/ ___\|  |  \|    |   |  |/    \|  |  \  \/  /
 /    |    \  | \/\  \___|   Y  \    |___|  |   |  \  |  />    < 
 \____|__  /__|    \___  >___|  /_______ \__|___|  /____//__/\_ \
         \/            \/     \/        \/       \/            \/'''
-elif distro == "ubuntu":
-    art = r''' ____ ______.                 __         
+    elif distro == "ubuntu":
+        art = r''' ____ ______.                 __         
 |    |   \_ |__  __ __  _____/  |_ __ __ 
 |    |   /| __ \|  |  \/    \   __\  |  \
 |    |  / | \_\ \  |  /   |  \  | |  |  /
 |______/  |___  /____/|___|  /__| |____/ 
               \/           \/            '''
-elif distro == "linuxmint":
-    art = r'''.____    .__                         _____  .__        __   
+    elif distro == "linuxmint":
+        art = r'''.____    .__                         _____  .__        __   
 |    |   |__| ____  __ _____  ___   /     \ |__| _____/  |_ 
 |    |   |  |/    \|  |  \  \/  /  /  \ /  \|  |/    \   __\
 |    |___|  |   |  \  |  />    <  /    Y    \  |   |  \  |  
 |_______ \__|___|  /____//__/\_ \ \____|__  /__|___|  /__|  
         \/       \/            \/         \/        \/      '''
-elif distro == "rhel":
-   art = r'''__________  ___ ______________.____     
+    elif distro == "rhel":
+        art = r'''__________  ___ ______________.____     
 \______   \/   |   \_   _____/|    |    
  |       _/    ~    \    __)_ |    |    
  |    |   \    Y    /        \|    |___ 
  |____|_  /\___|_  /_______  /|_______ \
         \/       \/        \/         \/'''
-elif distro == "gentoo":
-    art = r'''  ________               __                 
+    elif distro == "gentoo":
+        art = r'''  ________               __                 
  /  _____/  ____   _____/  |_  ____   ____  
 /   \  ____/ __ \ /    \   __\/  _ \ /  _ \ 
 \    \_\  \  ___/|   |  \  | (  <_> |  <_> )
  \______  /\___  >___|  /__|  \____/ \____/ 
         \/     \/     \/                    '''
-elif distro == "debian":
-    art = r'''________        ___.   .__               
+    elif distro == "debian":
+        art = r'''________        ___.   .__               
 \______ \   ____\_ |__ |__|____    ____  
  |    |  \_/ __ \| __ \|  \__  \  /    \ 
  |    `   \  ___/| \_\ \  |/ __ \|   |  \
 /_______  /\___  >___  /__(____  /___|  /
         \/     \/    \/        \/     \/ '''
-elif distro == "fedora":
-    art = r'''___________        .___                   
+    elif distro == "fedora":
+        art = r'''___________        .___                   
 \_   _____/___   __| _/________________   
  |    __)/ __ \ / __ |/  _ \_  __ \__  \  
  |     \\  ___// /_/ (  <_> )  | \// __ \_
  \___  / \___  >____ |\____/|__|  (____  /
      \/      \/     \/                 \/ '''
-elif distro == "opensuse":
-    art = r'''________                         _________                    
+    elif distro == "opensuse":
+        art = r'''________                         _________                    
 \_____  \ ______   ____   ____  /   _____/__ __  ______ ____  
  /   |   \\____ \_/ __ \ /    \ \_____  \|  |  \/  ___// __ \ 
 /    |    \  |_> >  ___/|   |  \/        \  |  /\___ \\  ___/ 
 \_______  /   __/ \___  >___|  /_______  /____//____  >\___  >
         \/|__|        \/     \/        \/           \/     \/ '''
-elif distro == "alpine":
-    art = r'''   _____  .__         .__               
+    elif distro == "alpine":
+        art = r'''   _____  .__         .__               
   /  _  \ |  | ______ |__| ____   ____  
  /  /_\  \|  | \____ \|  |/    \_/ __ \ 
 /    |    \  |_|  |_> >  |   |  \  ___/ 
 \____|__  /____/   __/|__|___|  /\___  >
         \/     |__|           \/     \/ '''
-elif distro == "cachyos":
-    art = r'''_________               .__            ________    _________
+    elif distro == "cachyos":
+        art = r'''_________               .__            ________    _________
 \_   ___ \_____    ____ |  |__ ___.__. \_____  \  /   _____/
 /    \  \/\__  \ _/ ___\|  |  <   |  |  /   |   \ \_____  \ 
 \     \____/ __ \\  \___|   Y  \___  | /    |    \/        \
  \______  (____  /\___  >___|  / ____| \_______  /_______  /
         \/     \/     \/     \/\/              \/        \/ '''
-else:
-    print(r''' ____ ___       __                               
+    else:
+        art = r''' ____ ___       __                               
 |    |   \____ |  | __ ____   ______  _  ______  
 |    |   /    \|  |/ //    \ /  _ \ \/ \/ /    \ 
 |    |  /   |  \    <|   |  (  <_> )     /   |  \
 |______/|___|  /__|_ \___|  /\____/ \/\_/|___|  /
-             \/     \/    \/                  \/ ''')
-print(f"{color}{art}{RESET}")
-print(f"{BOLD}{user}@{host}{RESET}")
-print(line("OS", os_name))
-print(line("Kernel", platform.release()))
-print(line("Uptime", uptime))
-print(line("Shell", shell))
-print(line("CPU", cpu_model))
-print(line("RAM", f"{ram_used:.1f} / {ram_total:.1f} GB ({ram_percent:.0f}%)"))
+             \/     \/    \/                  \/ '''
+
+    print(f"{color}{art}{RESET}")
+    print(f"{BOLD}{user}@{host}{RESET}")
+    print(line("OS", os_name))
+    print(line("Kernel", platform.release()))
+    print(line("Uptime", uptime))
+    print(line("Shell", shell))
+    print(line("CPU", cpu_model))
+    print(line("RAM", f"{ram_used:.1f} / {ram_total:.1f} GB ({ram_percent:.0f}%)"))
+
+
+if __name__ == "__main__":
+    main()
