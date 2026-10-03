@@ -12,6 +12,11 @@ A minimal, customizable system info fetcher written in Python — my personal al
 - ANSI-colored output
 - Zero config, single file, pure Python
 
+## Supported distros
+  - Arch, CachyOS, Ubuntu, Debian, Fedora, Linux Mint, RHEL, Gentoo, openSUSE, Alpine. Unknown distros fall back to a generic ASCII art with no color.
+
+- Want to add yours? Add an elif distro == "your_id": branch in sfetch.py with an ASCII art, and a color entry in dcolors.
+
 ## Requirements
 
 - Python 3.10+
