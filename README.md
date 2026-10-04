@@ -24,6 +24,9 @@ A minimal, customizable system info fetcher written in Python — my personal al
 - Python 3.10+
 - Linux (reads `/proc`, `/etc/os-release`)
 - `psutil`
+## New Update!
+- Added 8 distros: NixOS, Artix, EndeavourOS, Void, Garuda, Pop!_OS, Kali, Manjaro
+- Added 2 new lines: Terminal, Session type (wayland, x11, tty)
 
 ## Install
 
